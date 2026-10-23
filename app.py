@@ -39,8 +39,21 @@ col1, col2 = st.columns([1, 1])
 
 with col1:
     st.subheader("1. Paste SOAP Note")
+    
+    # File uploader for .txt files
+    uploaded_file = st.file_uploader("Or upload a .txt file", type=["txt"])
+    
+    # Default text to display in the box
+    default_text = ""
+    
+    # If the user uploaded a file, read it
+    if uploaded_file is not None:
+        default_text = uploaded_file.read().decode("utf-8")
+    
+    # The text area will show the uploaded text, or let the user type/paste
     soap_input = st.text_area(
-        "Paste the doctor's note here:", 
+        "Doctor's note:", 
+        value=default_text,
         height=400, 
         placeholder="SUBJECTIVE:\nPatient reports 3 days of fever...\n\nOBJECTIVE:\nTemp 101F...\n\nASSESSMENT:\nViral URI...\n\nPLAN:\nRest, fluids, Paracetamol..."
     )
