@@ -5,7 +5,7 @@
 CodeRx is a B2B AI tool that analyzes clinical SOAP notes and instantly generates accurate ICD-10 diagnosis codes and CPT procedure codes to streamline the revenue cycle for healthcare providers.
 
 ## 🚀 Live Demo
-*(Add your Streamlit link here once deployed)*
+*[Click here to try the live app](https://claimaudit.streamlit.app/)*
 
 ## 💡 The Problem
 Medical billing is a massive administrative burden. Clinics lose thousands of dollars due to incorrect coding or delayed claims. CodeRx automates the translation from clinical language to billing language, saving billers time and preventing revenue loss.
