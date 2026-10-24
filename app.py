@@ -13,52 +13,44 @@ def get_groq_client():
     except Exception:
         api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
-        st.error("GROQ_API_KEY not found. Please add it to Streamlit Secrets.")
+        st.error("GROQ_API_KEY not found.")
         st.stop()
     return Groq(api_key=api_key)
 
 client = get_groq_client()
 
-# --- BILLING PROMPT ---
 billing_prompt = """You are an expert medical coder. Analyze the following SOAP note and suggest the most likely billing codes.
-
 Output ONLY a markdown table with three columns:
 | Code Type | Code | Justification |
 |---|---|---|
 | ICD-10 | [code] | [Why this code?] |
 | CPT | [code] | [Why this code?] |
-
 If you are unsure, provide your best guess based on standard US billing guidelines. Do not output anything else."""
 
 # --- UI LAYOUT ---
 st.title("💊 CodeRx")
 st.write("Convert clinical SOAP notes into accurate ICD-10 and CPT billing codes instantly.")
 
-# Create two columns
+# Initialize columns
 col1, col2 = st.columns([1, 1])
 
 with col1:
     st.subheader("1. Paste SOAP Note")
     
-    # File uploader for .txt files
     uploaded_file = st.file_uploader("Or upload a .txt file", type=["txt"])
-    
-    # Default text to display in the box
-    default_text = ""
-    
-    # If the user uploaded a file, read it
-    if uploaded_file is not None:
-        default_text = uploaded_file.read().decode("utf-8")
-    
-    # The text area will show the uploaded text, or let the user type/paste
+    default_text = uploaded_file.read().decode("utf-8") if uploaded_file else ""
+        
     soap_input = st.text_area(
         "Doctor's note:", 
         value=default_text,
-        height=400, 
+        height=350, 
         placeholder="SUBJECTIVE:\nPatient reports 3 days of fever...\n\nOBJECTIVE:\nTemp 101F...\n\nASSESSMENT:\nViral URI...\n\nPLAN:\nRest, fluids, Paracetamol..."
     )
-    
-    generate_btn = st.button("⚡ Generate Billing Codes", use_container_width=True)
+
+# --- THE BUTTON IN THE MIDDLE ---
+st.write("") 
+generate_btn = st.button("⚡ Generate Billing Codes", use_container_width=True, type="primary")
+st.write("")
 
 with col2:
     st.subheader("2. Suggested Billing Codes")
@@ -83,6 +75,7 @@ with col2:
                 except Exception as e:
                     st.error(f"An error occurred: {str(e)}")
     else:
+        # This shows a placeholder box on the right when the app first loads
         st.info("Billing codes will appear here once you paste a note and click Generate.")
 
 # Footer
